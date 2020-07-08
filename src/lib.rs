@@ -74,7 +74,7 @@ impl<SPI, CS, SpiError, PinError> Tc72<SPI, CS>
     }
 
     fn write_reg(&mut self, reg: Registers, value: u8) -> Result<(), Tc72Error<SpiError, PinError>>{
-        let bytes = [((reg as u8) << 1)  | 0b0000_1000, value];
+        let bytes = [reg as u8 | 0b0000_1000, value];
         self.cs.set_high().map_err(Tc72Error::Cs)?;
         self.spi.write(&bytes).map_err(Tc72Error::Spi)?;
         self.cs.set_low().map_err(Tc72Error::Cs)?;
@@ -82,7 +82,7 @@ impl<SPI, CS, SpiError, PinError> Tc72<SPI, CS>
     }
 
     fn read_reg(&mut self, reg: Registers) -> Result<u8, Tc72Error<SpiError, PinError>> {
-        let mut bytes = [((reg as u8) << 1), 0];
+        let mut bytes = [reg as u8, 0];
         self.cs.set_high().map_err(Tc72Error::Cs)?;
         self.spi.transfer(&mut bytes)
             .map_err(Tc72Error::Spi)?;
