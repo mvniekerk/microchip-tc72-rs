@@ -87,6 +87,6 @@ impl<SPI, CS, SpiError, PinError> Tc72<SPI, CS>
         self.spi.transfer(&mut bytes)
             .map_err(Tc72Error::Spi)?;
         self.cs.set_low().map_err(Tc72Error::Cs)?;
-        Ok(bytes[0])
+        Ok(bytes[1])
     }
 }
